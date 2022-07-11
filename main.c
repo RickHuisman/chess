@@ -66,17 +66,18 @@ Board newBoard() {
   return board;
 }
 
+/* Check if a square is occupied by a white piece. */
 int isWhitePiece(Board board, int square) {
   return board.whitepieces[square];
 }
 
 void printPiece(char piece, int isWhitePiece, int square) {
   if (isWhitePiece) {
-    printf("%c", piece);
+    printf("%c ", piece);
     return;
   }
 
-  printf("%c", toupper(piece));
+  printf("%c ", toupper(piece));
 }
 
 void printBoard(Board board) {
@@ -90,7 +91,7 @@ void printBoard(Board board) {
 
     switch (square) {
       case EMPTY_SQUARE:
-        printf("•");
+        printf("• ");
         break;
       case ROOK:
         printPiece('r', whitePiece, square);
@@ -116,8 +117,35 @@ void printBoard(Board board) {
   }
 }
 
+/* Returns an array of ints, containing: [origin, destination] */
+int *translateMove(char *buf) {
+  // Translate origin.
+  int foobar = (buf[0] - 64) * 8;
+  int foobar2 = 8 - (buf[1] - '0');
+  int origin = foobar - foobar2;
+
+  // Translate destination.
+  int foobar3 = (buf[2] - 64) * 8;
+  int foobar4 = 8 - (buf[3] - '0');
+  int dest = foobar3 - foobar4;
+
+  int move[2];
+  move[0] = origin;
+  move[1] = dest;
+
+  return move;
+}
+
 int main() {
   Board board = newBoard();
-  printBoard(board);
+
+  // Game loop.
+  for (;;) {
+    char buf[1];
+    printf("Enter move (white):");
+    scanf("%s", buf);
+    int *move = translateMove(buf);
+  }
+
   return 0;
 }
